@@ -74,9 +74,9 @@ public void draw ()
      fill(170, 196, 255,200);
      rect(360, 548, 178, 55, 150);
      
-     image(clock,365,547, 55, 55);
+    // image(clock,365,547, 55, 55);
      rect(4, 548, 178, 55, 150);
-     image(flag,20,554, 45,45);
+    // image(flag,20,554, 45,45);
      fill(255);
     text(timeText, timeTextX, timeTextY + 24);
     
@@ -144,7 +144,7 @@ public class MSButton
         if (flagged){
             fill(255, 113, 113);
             //fill(255);
-            image(flagWhite,x,y, 32, 32);
+            //image(flagWhite,x,y, 32, 32);
         }
         // else if( clicked && mines.contains(this) ) 
         //     fill(255,0,0);
