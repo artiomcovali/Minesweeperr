@@ -1,4 +1,9 @@
 //timer
+PFont font;
+PImage clock;
+PImage flag;
+PImage flagWhite;
+
 import com.dhchoi.CountdownTimer;
 import com.dhchoi.CountdownTimerService;
 
@@ -9,7 +14,7 @@ CountdownTimer timer;
 int elapsedTime = 0;
 
 String timeText = "";
-final int timeTextX = 480, timeTextY = 550;  // upper left corner of displayed text
+final int timeTextX = 472, timeTextY = 550;  // upper left corner of displayed text
 color timeTextColor = color(255, 0, 0);  // color of text (red: stopped, green: running)
 int timeTextSeconds = 0, timeTextMinutes = 0; // the seconds and minutes to be displayed
 
@@ -24,9 +29,14 @@ public boolean flagTemp = false;
 
 void setup ()
 {
-    size(543, 700);
-    textSize(32);
+    font = createFont("MyKidsHandwrittenBasic-gxxZY.ttf", 64);
+    textFont(font);
+    size(541, 615);
+    textSize(64);
     textAlign(CENTER,CENTER);
+    clock = loadImage("clock.png");
+    flag = loadImage("flag.png");
+    flagWhite = loadImage("flagW.png");
     
     
     
@@ -46,6 +56,7 @@ void setup ()
     timer = CountdownTimerService.getNewCountdownTimer(this).configure(SECOND_IN_MILLIS, HOUR_IN_MILLIS);
     updateTimeText();
     setMines();
+    
 }
 public void setMines()
 {
@@ -54,10 +65,19 @@ public void setMines()
 
 public void draw ()
 {
-    background( 0 );
+    background(229, 253, 209);
     fill(255,0,0);
     if(isWon() == true)
         displayWinningMessage();
+     noStroke();
+     
+     fill(170, 196, 255,200);
+     rect(360, 548, 178, 55, 150);
+     
+     image(clock,365,547, 55, 55);
+     rect(4, 548, 178, 55, 150);
+     image(flag,20,554, 45,45);
+     fill(255);
     text(timeText, timeTextX, timeTextY + 24);
     
 }
@@ -100,7 +120,6 @@ public class MSButton
         myCol = col; 
         x = myCol*width;
         y = myRow*height;
-       
         myLabel = "";
         flagged = clicked = false;
         Interactive.add( this ); // register it with the manager
@@ -109,10 +128,10 @@ public class MSButton
     // called by manager
     public void mousePressed () 
     {
-      if(mouseButton == RIGHT) {
+      if(mouseButton == RIGHT && clicked==false) {
         flagged = !flagged;
       }
-      if(mouseButton == LEFT) {
+      if(mouseButton == LEFT && flagged==false) {
         clicked = true;
         timer.start();
       }
@@ -121,17 +140,19 @@ public class MSButton
     }
     public void draw () 
     {   
-        
-        if (flagged)
-            fill(255,0,0);
-      
+     
+        if (flagged){
+            fill(255, 113, 113);
+            //fill(255);
+            image(flagWhite,x,y, 32, 32);
+        }
         // else if( clicked && mines.contains(this) ) 
         //     fill(255,0,0);
         else if(clicked)
-            fill( 200 );
+            fill(255);
         else 
-            fill( 100 );
-
+            fill(170, 196, 255, 200);
+        stroke(1);
         rect(x, y, width, height);
         fill(0);
         text(myLabel,x+width/2,y+height/2);
