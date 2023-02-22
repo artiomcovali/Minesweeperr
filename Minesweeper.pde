@@ -1,8 +1,6 @@
 //timer
-PFont font;
-PImage clock;
-PImage flag;
-PImage flagWhite;
+/*
+
 
 import com.dhchoi.CountdownTimer;
 import com.dhchoi.CountdownTimerService;
@@ -17,8 +15,12 @@ String timeText = "";
 final int timeTextX = 472, timeTextY = 550;  // upper left corner of displayed text
 color timeTextColor = color(255, 0, 0);  // color of text (red: stopped, green: running)
 int timeTextSeconds = 0, timeTextMinutes = 0; // the seconds and minutes to be displayed
-
+*/
 //minesweeper
+PFont font;
+PImage clock;
+PImage flag;
+PImage flagWhite;
 
 import de.bezier.guido.*;
 private MSButton[][] buttons; //2d array of minesweeper buttons
@@ -53,8 +55,9 @@ void setup ()
     }
     
     
-    timer = CountdownTimerService.getNewCountdownTimer(this).configure(SECOND_IN_MILLIS, HOUR_IN_MILLIS);
+  /*  timer = CountdownTimerService.getNewCountdownTimer(this).configure(SECOND_IN_MILLIS, HOUR_IN_MILLIS);
     updateTimeText();
+    */
     setMines();
     
 }
@@ -74,11 +77,12 @@ public void draw ()
      fill(170, 196, 255,200);
      rect(360, 548, 178, 55, 150);
      
-    // image(clock,365,547, 55, 55);
+     image(clock,365,547, 55, 55);
      rect(4, 548, 178, 55, 150);
-    // image(flag,20,554, 45,45);
+     image(flag,20,554, 45,45);
      fill(255);
-    text(timeText, timeTextX, timeTextY + 24);
+   /* text(timeText, timeTextX, timeTextY + 24);
+   */
     
 }
 public boolean isWon()
@@ -133,7 +137,7 @@ public class MSButton
       }
       if(mouseButton == LEFT && flagged==false) {
         clicked = true;
-        timer.start();
+       // timer.start();
       }
       
         //your code here
@@ -144,7 +148,7 @@ public class MSButton
         if (flagged){
             fill(255, 113, 113);
             //fill(255);
-            //image(flagWhite,x,y, 32, 32);
+            image(flagWhite,x,y, 32, 32);
         }
         // else if( clicked && mines.contains(this) ) 
         //     fill(255,0,0);
@@ -172,7 +176,8 @@ public class MSButton
 }
 
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-//timer
+//timer 
+/*
 void updateTimeText() {
   timeTextSeconds = elapsedTime % 60;
   timeTextMinutes = elapsedTime / 60;
@@ -189,3 +194,4 @@ void onTickEvent(CountdownTimer t, long timeLeftUntilFinish) {
 void onFinishEvent(CountdownTimer t) {
   exit();
 }
+*/
