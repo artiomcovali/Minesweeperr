@@ -4,19 +4,8 @@ PImage clock;
 PImage flag;
 PImage flagWhite;
 
-import com.dhchoi.CountdownTimer;
-import com.dhchoi.CountdownTimerService;
-
-final long SECOND_IN_MILLIS = 1000;
-final long HOUR_IN_MILLIS = 36000000;
-
-CountdownTimer timer;
-int elapsedTime = 0;
-
-String timeText = "";
-final int timeTextX = 472, timeTextY = 550;  // upper left corner of displayed text
-color timeTextColor = color(255, 0, 0);  // color of text (red: stopped, green: running)
-int timeTextSeconds = 0, timeTextMinutes = 0; // the seconds and minutes to be displayed
+Timer stopWatch = new Timer();
+final int timeTextX = 472, timeTextY = 550;
 
 //minesweeper
 
@@ -26,6 +15,8 @@ private ArrayList <MSButton> mines; //ArrayList of just the minesweeper buttons 
 public final static int NUM_ROWS = 20;
 public final static int NUM_COLS = 20;
 public boolean flagTemp = false;
+int bombCount = 20;
+boolean dead = false;
 
 void setup ()
 {
@@ -53,8 +44,7 @@ void setup ()
     }
     
     
-    timer = CountdownTimerService.getNewCountdownTimer(this).configure(SECOND_IN_MILLIS, HOUR_IN_MILLIS);
-    updateTimeText();
+    
     setMines();
     
 }
@@ -66,6 +56,7 @@ public void setMines()
 public void draw ()
 {
     background(229, 253, 209);
+    stopWatch.update();
     fill(255,0,0);
     if(isWon() == true)
         displayWinningMessage();
@@ -78,9 +69,13 @@ public void draw ()
      rect(4, 548, 178, 55, 150);
      image(flag,20,554, 45,45);
      fill(255);
-    text(timeText, timeTextX, timeTextY + 24);
+    //text(timeText, timeTextX, timeTextY + 24);
+    text(nf(stopWatch.minutes(),2,0)+":"+nf(stopWatch.seconds(),2,0),timeTextX, timeTextY + 24);
+    text(bombCount, timeTextX-370, timeTextY + 24);
+
     
 }
+
 public boolean isWon()
 {
     //your code here
@@ -128,12 +123,20 @@ public class MSButton
     // called by manager
     public void mousePressed () 
     {
-      if(mouseButton == RIGHT && clicked==false) {
-        flagged = !flagged;
+      if(mouseButton == RIGHT && clicked==false && dead == false ) {
+        stopWatch.unpause();
+          if (bombCount > 0)
+            flagged = !flagged;
+          if (flagged && bombCount > 0)
+            bombCount--;
+          if (!flagged && bombCount > 0)
+            bombCount++;      
+
+        
       }
-      if(mouseButton == LEFT && flagged==false) {
+      if(mouseButton == LEFT && flagged==false && dead == false) {
         clicked = true;
-        timer.start();
+        stopWatch.unpause();
       }
       
         //your code here
@@ -143,6 +146,7 @@ public class MSButton
      
         if (flagged){
             fill(255, 113, 113);
+            //bombCount--;
             //fill(255);
            // image(flagWhite,x,y, 32, 32);
         }
@@ -158,6 +162,7 @@ public class MSButton
         text(myLabel,x+width/2,y+height/2);
         if (flagged)
           image(flagWhite,x,y, 32, 32);
+          
     }
     public void setLabel(String newLabel)
     {
@@ -173,21 +178,55 @@ public class MSButton
     }
 }
 
+
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-//timer
-void updateTimeText() {
-  timeTextSeconds = elapsedTime % 60;
-  timeTextMinutes = elapsedTime / 60;
-  timeText = nf(timeTextMinutes, 2) + ':' + nf(timeTextSeconds, 2);
-}
-
-// this is called once per second when the timer is running
-void onTickEvent(CountdownTimer t, long timeLeftUntilFinish) {
-  ++elapsedTime;
-  updateTimeText();
-}
-
-// this will be called after the timer finishes running for an hour
-void onFinishEvent(CountdownTimer t) {
-  exit();
-}
+class Timer {
+  int timerStart = 0;
+  int offset;
+  
+  int mill;
+  int minutes;
+  int seconds;
+  int hundredths;
+  
+  boolean stopped = true;
+  boolean continued = false;
+  
+  Timer() {
+    
+  }
+  
+  void update() {
+    if(!stopped) {
+  mill=(millis()-timerStart);
+  if(continued) mill += offset;
+  
+  seconds = mill / 1000;
+  minutes = seconds / 60;
+  seconds = seconds % 60;
+  hundredths = mill / 10 % 100;
+    }
+  }
+  
+  void pause() { stopped = true; }
+  
+  void unpause() {
+    stopped = false;
+    continued = true;
+    timerStart = millis();
+    
+    offset = mill;
+  }
+  
+  void reset() {
+    stopped = false;
+    continued = true;
+    timerStart = millis();
+  }
+  
+  int minutes() { return minutes; }
+  int seconds() { return seconds; }
+  int hundredths() { return hundredths; }
+  
+  boolean isPaused() { if (stopped) return true; else return false; }
+} 
