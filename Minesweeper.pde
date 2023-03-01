@@ -70,7 +70,8 @@ public void draw ()
      image(flag,20,556, 45,45);
      fill(255);
     //text(timeText, timeTextX, timeTextY + 24);
-    text(nf(stopWatch.minutes(),2,0)+":"+nf(stopWatch.seconds(),2,0),timeTextX, timeTextY + 28);
+        text(stopWatch.minutes()+":"+stopWatch.seconds(),timeTextX, timeTextY + 28);
+
     text(bombCount, timeTextX-370, timeTextY + 28);
 
     
