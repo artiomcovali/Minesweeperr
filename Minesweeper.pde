@@ -191,7 +191,7 @@ class Timer {
   int seconds;
   int hundredths;
   
-  boolean stopped = true;
+  boolean stopped = false;
   boolean continued = false;
   
   Timer() {
