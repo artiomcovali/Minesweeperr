@@ -4,8 +4,19 @@ PImage clock;
 PImage flag;
 PImage flagWhite;
 
-Timer stopWatch = new Timer();
+//Timer stopWatch = new Timer();
 int timeTextX = 472, timeTextY = 550;
+
+int timerStart = 0;
+int offset;
+
+int mill;
+int minutes;
+int seconds;
+int hundredths;
+
+boolean stopped = true;
+boolean continued = false;
 
 //minesweeper
 
@@ -22,7 +33,7 @@ void setup ()
 {
     font = createFont("minefont.ttf", 64);
     textFont(font);
-    size(545, 620);
+  size(545, 620);
     textSize(50);
     textAlign(CENTER,CENTER);
     clock = loadImage("clock.png");
@@ -56,7 +67,15 @@ public void setMines()
 public void draw ()
 {
     background(229, 253, 209);
-    stopWatch.update();
+    if(!stopped) {
+    mill=(millis()-timerStart);
+    if(continued) mill += offset;
+    
+    seconds = mill / 1000;
+    minutes = seconds / 60;
+    seconds = seconds % 60;
+    hundredths = mill / 10 % 100;
+  }
     fill(255,0,0);
     if(isWon() == true)
         displayWinningMessage();
@@ -70,7 +89,7 @@ public void draw ()
      image(flag,20,556, 45,45);
      fill(255);
     //text(timeText, timeTextX, timeTextY + 24);
-    //text((nfs(stopWatch.minutes(),2)+":"+nfs(stopWatch.seconds(),2)),timeTextX, timeTextY + 28);
+    text(nf(minutes,2,0)+":"+nf(seconds,2,0)+":"+nf(hundredths,2,0),timeTextX, timeTextY + 28);
 
     text(bombCount, timeTextX-370, timeTextY + 28);
 
@@ -137,7 +156,9 @@ public class MSButton
       }
       if(mouseButton == LEFT && flagged==false && dead == false) {
         clicked = true;
-       // stopWatch.unpause();
+        stopped = false;
+        continued = false;
+        timerStart = millis();
       }
       
         //your code here
