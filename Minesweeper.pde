@@ -137,7 +137,7 @@ public class MSButton
       }
       if(mouseButton == LEFT && flagged==false && dead == false) {
         clicked = true;
-        stopWatch.unpause();
+       // stopWatch.unpause();
       }
       
         //your code here
@@ -163,7 +163,7 @@ public class MSButton
         text(myLabel,x+width/2,y+height/2);
         if (flagged)
           image(flagWhite,x,y, 32, 32);
-        text(stopWatch.seconds(), timeTextX-370, timeTextY + 28);
+      //  text(stopWatch.seconds(), timeTextX-370, timeTextY + 28);
           
     }
     public void setLabel(String newLabel)
