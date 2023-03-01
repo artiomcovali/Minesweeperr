@@ -89,7 +89,8 @@ public void draw ()
      image(flag,20,556, 45,45);
      fill(255);
     //text(timeText, timeTextX, timeTextY + 24);
-    text(nf(minutes,2,0)+":"+nf(seconds,2,0)+":"+nf(hundredths,2,0),timeTextX, timeTextY + 28);
+    text(nf(minutes,2)+":"+nf(seconds,2),timeTextX, timeTextY + 28);
+
 
     text(bombCount, timeTextX-370, timeTextY + 28);
 
@@ -184,7 +185,6 @@ public class MSButton
         text(myLabel,x+width/2,y+height/2);
         if (flagged)
           image(flagWhite,x,y, 32, 32);
-        text(minutes+":"+seconds,timeTextX, timeTextY + 28);
 
           
     }
