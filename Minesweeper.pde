@@ -20,10 +20,10 @@ boolean dead = false;
 
 void setup ()
 {
-    font = createFont("MyKidsHandwrittenBasic-gxxZY.ttf", 64);
+    font = createFont("minefont.ttf", 64);
     textFont(font);
-    size(548, 620);
-    textSize(64);
+    size(545, 620);
+    textSize(50);
     textAlign(CENTER,CENTER);
     clock = loadImage("clock.png");
     flag = loadImage("flag.png");
@@ -63,15 +63,15 @@ public void draw ()
      noStroke();
      
      fill(170, 196, 255,200);
-     rect(360, 548, 178, 55, 150);
+     rect(360, 552, 178, 55, 155);
      
-     image(clock,365,547, 55, 55);
-     rect(4, 548, 178, 55, 150);
-     image(flag,20,554, 45,45);
+     image(clock,365,552, 55, 55);
+     rect(4, 552, 178, 55, 155);
+     image(flag,20,556, 45,45);
      fill(255);
     //text(timeText, timeTextX, timeTextY + 24);
-   // text(nf(stopWatch.minutes(),2,0)+":"+nf(stopWatch.seconds(),2,0),timeTextX, timeTextY + 24);
-    text(bombCount, timeTextX-370, timeTextY + 24);
+    text(nf(stopWatch.minutes(),2,0)+":"+nf(stopWatch.seconds(),2,0),timeTextX, timeTextY + 28);
+    text(bombCount, timeTextX-370, timeTextY + 28);
 
     
 }
