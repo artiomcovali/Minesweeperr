@@ -22,7 +22,7 @@ void setup ()
 {
     font = createFont("MyKidsHandwrittenBasic-gxxZY.ttf", 64);
     textFont(font);
-    size(541, 615);
+    size(545, 620);
     textSize(64);
     textAlign(CENTER,CENTER);
     clock = loadImage("clock.png");
