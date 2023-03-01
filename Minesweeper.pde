@@ -156,10 +156,11 @@ public class MSButton
         
       }
       if(mouseButton == LEFT && flagged==false && dead == false) {
-        clicked = true;
+         clicked = true;
         stopped = false;
-        continued = false;
+        continued = true;
         timerStart = millis();
+        offset = mill;
       }
       
         //your code here
