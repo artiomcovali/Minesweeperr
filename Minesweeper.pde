@@ -125,7 +125,7 @@ public class MSButton
     public void mousePressed () 
     {
       if(mouseButton == RIGHT && clicked==false && dead == false ) {
-        stopWatch.unpause();
+       // stopWatch.unpause();
           if (bombCount > 0)
             flagged = !flagged;
           if (flagged && bombCount > 0)
@@ -191,7 +191,7 @@ class Timer {
   int seconds;
   int hundredths;
   
-  boolean stopped = false;
+  boolean stopped = true;
   boolean continued = false;
   
   Timer() {
