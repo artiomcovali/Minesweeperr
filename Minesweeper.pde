@@ -33,7 +33,7 @@ void setup ()
 {
     font = createFont("minefont.ttf", 64);
     textFont(font);
-  size(550, 620);
+  size(553, 620);
     textSize(50);
     textAlign(CENTER,CENTER);
     clock = loadImage("clock.png");
