@@ -275,7 +275,7 @@ public class MSButton
     hundredths = mill / 10 % 100;
   }
         if (marked)
-            fill(240, 245, 115);
+            fill(81, 84, 82);
         else if(clicked && mines.contains(this)) {
            
             fill(255,0,0);
