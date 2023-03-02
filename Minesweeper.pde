@@ -36,7 +36,7 @@ void setup ()
     font = createFont("Trebuchet MS", 50);
     textFont(font);
   size(553, 620);
-    textSize(40);
+    textSize(35);
     textAlign(CENTER,CENTER);
     clock = loadImage("clock.png");
     flag = loadImage("flag.png");
