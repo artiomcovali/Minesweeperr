@@ -279,7 +279,7 @@ public class MSButton
            
         }
         else if(clicked)
-            fill( 255 );
+            fill(245, 244, 223);
         else 
             fill(170, 196, 255, 200);
         
