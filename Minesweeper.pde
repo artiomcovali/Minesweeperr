@@ -9,7 +9,7 @@ int timeTextX = 472, timeTextY = 550;
 
 int timerStart = 0;
 int offset;
-
+boolean firstClick = true;
 int mill;
 int minutes;
 int seconds;
@@ -22,11 +22,12 @@ boolean continued = false;
 
 import de.bezier.guido.*;
 private MSButton[][] buttons; //2d array of minesweeper buttons
-private ArrayList <MSButton> mines; //ArrayList of just the minesweeper buttons that are mined
+private ArrayList <MSButton> mines = new ArrayList <MSButton>(); //ArrayList of just the minesweeper buttons that are mined
 public final static int NUM_ROWS = 20;
 public final static int NUM_COLS = 20;
 public boolean flagTemp = false;
-int bombCount = 20;
+int bombCount = 50;
+int tileCount = 0;
 boolean dead = false;
 
 void setup ()
@@ -56,14 +57,40 @@ void setup ()
     
     
     
-    setMines();
+   // setMines();
     
 }
 public void setMines()
 {
-    //your code
+      int rows = (int)(Math.random()*NUM_ROWS);
+    int cols = (int)(Math.random()*NUM_COLS);
+    int b = mines.size();
+    while(b<bombCount)//your code
+    {
+        if(!mines.contains(buttons[rows][cols]))
+            {
+                mines.add(buttons[rows][cols]);
+                rows = (int)(Math.random()*NUM_ROWS);
+                cols = (int)(Math.random()*NUM_COLS);
+                b++;
+            }
+        else
+        {
+            rows = (int)(Math.random()*NUM_ROWS);
+            cols = (int)(Math.random()*NUM_COLS); 
+        }    
+    }
 }
-
+public void clearMines(int row, int col)
+{
+    for(int r=-1;r<2;r++)
+    {
+        for(int c=-1;c<2;c++)
+        {
+            mines.remove(buttons[row+r][col+c]);
+        }
+    }
+}
 public void draw ()
 {
     background(229, 253, 209);
@@ -104,104 +131,204 @@ public boolean isWon()
 }
 public void displayLosingMessage()
 {
-    //your code here
+     for(int i=0;i<mines.size();i++)
+        if(mines.get(i).isClicked()==false)
+            mines.get(i).mousePressed();
+    dead = true;
+    buttons[NUM_ROWS/2][(NUM_COLS/2)-4].setLabel("Y");
+    buttons[NUM_ROWS/2][(NUM_COLS/2)-3].setLabel("O");
+    buttons[NUM_ROWS/2][(NUM_COLS/2-2)].setLabel("U");
+    buttons[NUM_ROWS/2][(NUM_COLS/2-1)].setLabel("");
+    buttons[NUM_ROWS/2][(NUM_COLS/2)].setLabel("L");
+    buttons[NUM_ROWS/2][(NUM_COLS/2+1)].setLabel("O");
+    buttons[NUM_ROWS/2][(NUM_COLS/2+2)].setLabel("S");
+    buttons[NUM_ROWS/2][(NUM_COLS/2+3)].setLabel("E");
 }
 public void displayWinningMessage()
 {
     //your code here
 }
-public boolean isValid(int r, int c)
-{
-    //your code here
-    return false;
-}
-public int countMines(int row, int col)
-{
-    int numMines = 0;
-    //your code here
-    return numMines;
-}
+
 public class MSButton
 {
-    private int myRow, myCol;
-    private float x,y, width, height;
-    private boolean clicked, flagged;
-    private String myLabel;
     
-    public MSButton ( int row, int col )
+    private int r, c;
+    private float x,y, width, height;
+    private boolean clicked, marked;
+    private String label;
+    
+    public MSButton ( int rr, int cc )
     {
-       width = 550/NUM_COLS;
+        width = 550/NUM_COLS;
         height = 550/NUM_ROWS;
-        myRow = row;
-        myCol = col; 
-        x = myCol*width;
-        y = myRow*height;
-        myLabel = "";
-        flagged = clicked = false;
+        
+        r = rr;
+        c = cc; 
+        x = c*width;
+        y = r*height;
+        label = "";
+        marked = clicked = false;
         Interactive.add( this ); // register it with the manager
     }
-
-    // called by manager
-    public void mousePressed () 
+    public boolean isMarked()
     {
-      if(mouseButton == RIGHT && clicked==false && dead == false ) {
+        return marked;
+    }
+    public boolean isClicked()
+    {
+        return clicked;
+    }
+    // called by manager
+    
+    public void mousePressed() 
+    {
+        if(firstClick == true&&mouseButton == LEFT && clicked == false && dead == false)
+        {
+            setMines();
+             stopped = false;
+            continued = true;
+           timerStart = millis();
+        offset = mill;
+            if(mines.contains(buttons[r][c])||countBombs(r,c)>0)
+            {
+                clearMines(r,c);
+                setMines();
+            }
+            firstClick = false;
+            clearUseless();
+            
+            if(firstClick == false)
+                mousePressed();
+        }
+      
+         else if(mouseButton == RIGHT && clicked==false && dead == false ) {
        // stopWatch.unpause();
           if (bombCount > 0)
-            flagged = !flagged;
-          if (flagged && bombCount > 0)
+            marked = !marked;
+          if (marked && bombCount > 0)
             bombCount--;
-          if (!flagged && bombCount > 0)
-            bombCount++;      
+          if (!marked && bombCount > 0)
+            bombCount++; 
+            stopped = false;
+            continued = true;
+           timerStart = millis();
+        offset = mill;
 
         
       }
-      if(mouseButton == LEFT && flagged==false && dead == false) {
-         clicked = true;
-        stopped = false;
-        continued = true;
-        timerStart = millis();
-        offset = mill;
-      }
-      
-        //your code here
+        
+        else if(mouseButton == LEFT && marked == false&&mines.contains(buttons[r][c])==true)
+        {
+            clicked = true;
+            dead = true;
+            stopped = true;
+            continued = false;
+            
+            
+        }
+        else  if(mouseButton == LEFT && isMarked() == false && dead == false)
+        {
+            clicked=true;
+            String myString = new String();
+            if(countBombs(r,c)>0)
+            {
+                setLabel(myString + countBombs(r,c));//your code here
+            }
+            else
+            {
+                setLabel(myString); 
+            }
+            clearUseless();
+        }
+        else if(mouseButton == RIGHT && clicked == false)
+            marked = !marked;
+        }
+        public void clearUseless()
+    {
+             for(int a = -1; a<2; a++){
+                for(int b = -1; b<2; b++){
+                    if(isValid(r+a,c+b) && countBombs(r,c)==0 && buttons[r+a][c+b].marked==false){
+                        if(buttons[r+a][c+b].isClicked() == false){
+                            buttons[r+a][c+b].mousePressed();
+                        }
+                    }
+                }
+            }
+            countCleared();
     }
     public void draw () 
-    {   
-     
-        if (flagged){
+    {    
+      
+      if(!stopped) {
+    mill=(millis()-timerStart);
+    if(continued) mill += offset;
+    
+    seconds = mill / 1000;
+    minutes = seconds / 60;
+    seconds = seconds % 60;
+    hundredths = mill / 10 % 100;
+  }
+        if (marked)
             fill(255, 113, 113);
-            //bombCount--;
-            //fill(255);
-           // image(flagWhite,x,y, 32, 32);
-        }
-        // else if( clicked && mines.contains(this) ) 
-        //     fill(255,0,0);
+        else if(clicked && mines.contains(this)) 
+            fill(255,0,0);
         else if(clicked)
-            fill(255);
+            fill( 200 );
         else 
             fill(170, 196, 255, 200);
+        
         stroke(1);
         rect(x, y, width, height);
         fill(0);
-        text(myLabel,x+width/2,y+height/2);
-        if (flagged)
+        text(label,x+width/2,y+height/2);
+        if (marked)
           image(flagWhite,x,y, 32, 32);
-
-          
+        if(dead == true)
+        {
+            displayLosingMessage();
+        }
+        
     }
     public void setLabel(String newLabel)
     {
-        myLabel = newLabel;
+        label = newLabel;
     }
-    public void setLabel(int newLabel)
+    public boolean isValid(int r, int c)
     {
-        myLabel = ""+ newLabel;
+        if(r<NUM_ROWS && c < NUM_COLS && r >=0 && c >=0)
+            return true;//your code here
+        return false;
     }
-    public boolean isFlagged()
+    public int countBombs(int row, int col)
     {
-        return flagged;
+        int numBombs = 0;
+        for(int i=-1;i<2;i++)
+        {
+            for(int j=-1;j<2;j++)
+            {
+                if(isValid(row+i,j+col)==true && mines.contains(buttons[row+i][col+j])==true)
+                    numBombs++;
+                }
+            }   //your code here
+        return numBombs;
+    }
+    public void countCleared()
+    {
+        int count = 0;
+        for(int r=0;r<buttons.length;r++)
+        {
+            for(int c=0;c<buttons[r].length;c++)
+                {
+                    if(buttons[r][c].isClicked()==true)
+                        count ++;
+                }
+        }
+        if(count == ((NUM_COLS*NUM_ROWS)-bombCount))
+            dead = true;
     }
 }
+
+
 
 
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
