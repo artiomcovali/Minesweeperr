@@ -32,7 +32,7 @@ boolean dead = false;
 
 void setup ()
 {
-    font = createFont("fonts/minefont.ttf", 64);
+    font = createFont("Trebuchet MS", 64);
     textFont(font);
   size(553, 620);
     textSize(50);
