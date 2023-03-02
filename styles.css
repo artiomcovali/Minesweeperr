@@ -17,10 +17,14 @@ header {
 
 footer {
 	#font-style: italic;
-	color: black;
 	font-size: 90%;
 }
 
-footer: hover {
+a {
+	color: black;
+
+}
+
+a: hover {
 	color: rgb(122, 163, 250);
 }
