@@ -280,7 +280,9 @@ public class MSButton
         stroke(1);
         rect(x, y, width, height);
         fill(0);
+        textSize(18);
         text(label,x+width/2,y+height/2);
+          textSize(40);
         if (marked)
           image(flagWhite,x,y, 32, 32);
         if(dead == true)
