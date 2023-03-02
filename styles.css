@@ -1,7 +1,7 @@
 body {
     background-colorc: rgb(225, 161, 255);
     color: rgb(0,0,0);
-    font-family: "Open Sans", sans-serif;
+    font-family: "Trebuchet MS", sans-serif;
     text-align: center;
 }
 
@@ -16,6 +16,11 @@ header {
 }
 
 footer {
-	font-style: italic;
+	#font-style: italic;
+	color: black;
 	font-size: 90%;
+}
+
+footer: hover {
+	color: rgb(122, 163, 250);
 }
