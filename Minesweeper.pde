@@ -3,6 +3,7 @@ PFont font;
 PImage clock;
 PImage flag;
 PImage flagWhite;
+PImage bomb;
 
 //Timer stopWatch = new Timer();
 int timeTextX = 472, timeTextY = 550;
@@ -32,14 +33,15 @@ boolean dead = false;
 
 void setup ()
 {
-    font = createFont("Trebuchet MS", 64);
+    font = createFont("Trebuchet MS", 50);
     textFont(font);
   size(553, 620);
-    textSize(40);
+    textSize(50);
     textAlign(CENTER,CENTER);
     clock = loadImage("clock.png");
     flag = loadImage("flag.png");
     flagWhite = loadImage("flagW.png");
+    bomb = loadImage("bomb.png");
     
     
     
@@ -109,11 +111,11 @@ public void draw ()
      noStroke();
      
      fill(170, 196, 255,200);
-     rect(360, 552, 178, 55, 155);
+     rect(360, 552, 178, 55+5, 155);
      
-     image(clock,365,552, 55, 55);
-     rect(4, 552, 178, 55, 155);
-     image(flag,20,556, 45,45);
+     image(clock,365,552, 55+5, 55);
+     rect(4, 552, 178, 55+5, 155);
+     image(flag,20,556, 45+5,45);
      fill(255);
     //text(timeText, timeTextX, timeTextY + 24);
     text(nf(minutes,2)+":"+nf(seconds,2),timeTextX, timeTextY + 28);
@@ -240,7 +242,7 @@ public class MSButton
             }
             clearUseless();
         }
-        else if(mouseButton == RIGHT && clicked == false)
+        else if(mouseButton == RIGHT && clicked == false && dead == false)
             marked = !marked;
         }
         public void clearUseless()
@@ -258,7 +260,8 @@ public class MSButton
     }
     public void draw () 
     {    
-      
+         
+
       if(!stopped) {
     mill=(millis()-timerStart);
     if(continued) mill += offset;
@@ -269,18 +272,21 @@ public class MSButton
     hundredths = mill / 10 % 100;
   }
         if (marked)
-            fill(255, 113, 113);
-        else if(clicked && mines.contains(this)) 
+            fill(203, 121, 247);
+        else if(clicked && mines.contains(this)) {
+           
             fill(255,0,0);
+           
+        }
         else if(clicked)
-            fill( 200 );
+            fill( 255 );
         else 
             fill(170, 196, 255, 200);
         
         stroke(1);
         rect(x, y, width, height);
         fill(0);
-        textSize(18);
+         textSize(18);
         text(label,x+width/2,y+height/2);
           textSize(40);
         if (marked)
@@ -288,11 +294,19 @@ public class MSButton
         if(dead == true)
         {
             displayLosingMessage();
+            //image(bomb,x,y, 32, 32);
+             if(clicked && mines.contains(this)) {
+           
+            image(bomb,x+3,y+1, 25, 25);
+           
+        }
         }
         
     }
     public void setLabel(String newLabel)
     {
+
+
         label = newLabel;
     }
     public boolean isValid(int r, int c)
@@ -334,53 +348,3 @@ public class MSButton
 
 
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-class Timer {
-  int timerStart = 0;
-  int offset;
-  
-  int mill;
-  int minutes;
-  int seconds;
-  int hundredths;
-  
-  boolean stopped = true;
-  boolean continued = false;
-  
-  Timer() {
-    
-  }
-  
-  void update() {
-    if(!stopped) {
-  mill=(millis()-timerStart);
-  if(continued) mill += offset;
-  
-  seconds = mill / 1000;
-  minutes = seconds / 60;
-  seconds = seconds % 60;
-  hundredths = mill / 10 % 100;
-    }
-  }
-  
-  void pause() { stopped = true; }
-  
-  void unpause() {
-    stopped = false;
-    continued = true;
-    timerStart = millis();
-    
-    offset = mill;
-  }
-  
-  void reset() {
-    stopped = false;
-    continued = true;
-    timerStart = millis();
-  }
-  
-  int minutes() { return minutes; }
-  int seconds() { return seconds; }
-  int hundredths() { return hundredths; }
-  
-  boolean isPaused() { if (stopped) return true; else return false; }
-} 
