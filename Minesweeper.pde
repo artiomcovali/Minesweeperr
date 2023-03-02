@@ -111,17 +111,17 @@ public void draw ()
      noStroke();
      
      fill(170, 196, 255,200);
-     rect(360, 552, 178, 55+5, 155);
+     rect(360, 552+5, 178, 55, 155+5);
      
-     image(clock,365,552, 55+5, 55);
-     rect(4, 552, 178, 55+5, 155);
-     image(flag,20,556, 45+5,45);
+     image(clock,365,552+5, 55, 55);
+     rect(4, 552+5, 178, 55, 155);
+     image(flag,20,556+5, 45,45);
      fill(255);
     //text(timeText, timeTextX, timeTextY + 24);
-    text(nf(minutes,2)+":"+nf(seconds,2),timeTextX, timeTextY + 28);
+    text(nf(minutes,2)+":"+nf(seconds,2),timeTextX, timeTextY + 30);
 
 
-    text(bombCount, timeTextX-370, timeTextY + 28);
+    text(bombCount, timeTextX-370, timeTextY + 30);
 
     
 }
