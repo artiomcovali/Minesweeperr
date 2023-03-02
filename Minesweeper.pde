@@ -140,7 +140,7 @@ public void displayLosingMessage()
             mines.get(i).mousePressed();
     dead = true;
     noStroke();
-    fill(166, 136, 235,25);
+    fill(166, 136, 235,15);
     rect(25, 75, 490, 400, 155);
     fill(255);
     text("Game Over!", 275, 120);
