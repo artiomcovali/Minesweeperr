@@ -4,6 +4,7 @@ PImage clock;
 PImage flag;
 PImage flagWhite;
 PImage bomb;
+PImage bombW;
 
 //Timer stopWatch = new Timer();
 int timeTextX = 472, timeTextY = 550;
@@ -36,12 +37,13 @@ void setup ()
     font = createFont("Trebuchet MS", 50);
     textFont(font);
   size(553, 620);
-    textSize(35);
+    textSize(40);
     textAlign(CENTER,CENTER);
     clock = loadImage("clock.png");
     flag = loadImage("flag.png");
     flagWhite = loadImage("flagW.png");
     bomb = loadImage("bomb.png");
+    bombW = loadImage("clockW.png");
     
     
     
@@ -137,14 +139,15 @@ public void displayLosingMessage()
         if(mines.get(i).isClicked()==false)
             mines.get(i).mousePressed();
     dead = true;
-    buttons[NUM_ROWS/2][(NUM_COLS/2)-4].setLabel("Y");
-    buttons[NUM_ROWS/2][(NUM_COLS/2)-3].setLabel("O");
-    buttons[NUM_ROWS/2][(NUM_COLS/2-2)].setLabel("U");
-    buttons[NUM_ROWS/2][(NUM_COLS/2-1)].setLabel("");
-    buttons[NUM_ROWS/2][(NUM_COLS/2)].setLabel("L");
-    buttons[NUM_ROWS/2][(NUM_COLS/2+1)].setLabel("O");
-    buttons[NUM_ROWS/2][(NUM_COLS/2+2)].setLabel("S");
-    buttons[NUM_ROWS/2][(NUM_COLS/2+3)].setLabel("E");
+    noStroke();
+    fill(166, 136, 235,25);
+    rect(25, 75, 490, 400, 155);
+    fill(255);
+    text("Game Over!", 275, 120);
+    image(bombW,220,160, 120, 120);
+
+    text("Elapsed Time: "+ nf(minutes,2)+":"+nf(seconds,2), 275, 300);
+    
 }
 public void displayWinningMessage()
 {
